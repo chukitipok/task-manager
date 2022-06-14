@@ -5,15 +5,14 @@ import core.command.CommandDTO;
 import core.task.Task;
 import core.ports.TaskReader;
 import core.ports.TaskWriter;
+import infrastructure.repository.TaskRepository;
 
 public class RemoveTask implements Command {
 
-    private final TaskReader taskReader;
-    private final TaskWriter taskWriter;
+    private final TaskRepository taskRepository;
 
-    public RemoveTask(TaskReader taskReader, TaskWriter taskWriter) {
-        this.taskReader = taskReader;
-        this.taskWriter = taskWriter;
+    public RemoveTask(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
     public Task execute(CommandDTO commandDTO) {
