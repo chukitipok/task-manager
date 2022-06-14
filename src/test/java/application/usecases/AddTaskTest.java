@@ -38,7 +38,7 @@ class AddTaskTest {
         var input = new CommandDTO(CommandAction.ADD, null, new HashMap<>());
 
         var expected = new Task(
-                new TaskID(1),
+                Optional.of(new TaskID(1)),
                 input.options().get(CommandOption.CONTENT),
                 Optional.empty(),
                 TaskState.TODO,
@@ -48,7 +48,7 @@ class AddTaskTest {
         when(mockedTaskRepository.save(any(Task.class))).thenReturn(expected);
 
         var result = sut.execute(input);
-        assertEquals(expected, result);
+        assertEquals(expected, result.stream().findFirst());
 
         verify(mockedTaskRepository).findLastId();
         verify(mockedTaskRepository).save(any(Task.class));

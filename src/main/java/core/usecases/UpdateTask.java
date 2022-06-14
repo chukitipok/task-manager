@@ -3,9 +3,9 @@ package core.usecases;
 import core.command.Command;
 import core.command.CommandDTO;
 import core.task.Task;
-import core.ports.TaskReader;
-import core.ports.TaskWriter;
 import infrastructure.repository.TaskRepository;
+
+import java.util.Collection;
 
 public class UpdateTask implements Command {
 
@@ -15,7 +15,7 @@ public class UpdateTask implements Command {
         this.taskRepository = taskRepository;
     }
 
-    public Task execute(CommandDTO commandDTO) {
+    public Collection<Task> execute(CommandDTO commandDTO) {
         return null;
     }
 }

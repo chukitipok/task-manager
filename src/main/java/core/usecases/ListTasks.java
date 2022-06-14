@@ -6,6 +6,8 @@ import core.task.Task;
 import core.ports.TaskReader;
 import infrastructure.repository.TaskRepository;
 
+import java.util.Collection;
+
 public class ListTasks implements Command {
 
     private final TaskRepository taskRepository;
@@ -14,7 +16,7 @@ public class ListTasks implements Command {
         this.taskRepository = taskRepository;
     }
 
-    public Task execute(CommandDTO commandDTO) {
-        return null;
+    public Collection<Task> execute(CommandDTO commandDTO) {
+        return taskRepository.readAll();
     }
 }

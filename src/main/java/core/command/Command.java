@@ -2,6 +2,8 @@ package core.command;
 
 import core.task.Task;
 
+import java.util.Collection;
+
 public interface Command {
-    Task execute(CommandDTO commandDTO);
+    Collection<Task> execute(CommandDTO commandDTO);
 }

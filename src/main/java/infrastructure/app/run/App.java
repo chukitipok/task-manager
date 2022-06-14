@@ -1,9 +1,11 @@
 package infrastructure.app.run;
 
+import core.task.Task;
 import infrastructure.app.config.Configuration;
 import infrastructure.util.InvalidCommandException;
 import infrastructure.util.CommandParser;
 
+import java.util.Collection;
 import java.util.List;
 
 public class App {
@@ -15,7 +17,7 @@ public class App {
             var commandDTO = new CommandParser().parse(List.of(args));
             var command = commandGenerator.generate(commandDTO.action());
 
-            var task = command.execute(commandDTO);
+            Collection<Task> tasks = command.execute(commandDTO);
 
             // todo: print task
         }
