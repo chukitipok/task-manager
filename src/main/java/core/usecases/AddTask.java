@@ -8,6 +8,7 @@ import core.ports.TaskWriter;
 import core.task.Task;
 import core.task.TaskID;
 import core.task.TaskState;
+import infrastructure.repository.TaskRepository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,12 +16,10 @@ import java.util.Optional;
 
 public class AddTask implements Command {
 
-    private final TaskReader taskReader;
-    private final TaskWriter taskWriter;
+    private final TaskRepository taskRepository;
 
-    public AddTask(TaskReader taskReader, TaskWriter taskWriter) {
-        this.taskReader = taskReader;
-        this.taskWriter = taskWriter;
+    public AddTask(TaskRepository taskRepository) {
+        this.taskRepository = taskRepository;
     }
 
     public Task execute(CommandDTO commandDTO) {
@@ -29,7 +28,7 @@ public class AddTask implements Command {
         Optional<LocalDate> dueDate =
                 dueDateOption != null ? Optional.of(LocalDate.parse(dueDateOption)) : Optional.empty();
 
-        var taskId = taskReader.findLastId().orElseGet(() -> new TaskID(1));
+        var taskId = taskRepository.findLastId().orElseGet(() -> new TaskID(1));
 
         var task = new Task(
                 taskId,
@@ -38,6 +37,6 @@ public class AddTask implements Command {
                 TaskState.TODO,
                 List.of());
 
-        return taskWriter.save(task);
+        return taskRepository.save(task);
     }
 }

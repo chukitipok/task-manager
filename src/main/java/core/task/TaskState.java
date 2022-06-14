@@ -29,4 +29,8 @@ public enum TaskState {
 
         return Optional.empty();
     }
+
+    public int toValue() {
+        return ordinal();
+    }
 }

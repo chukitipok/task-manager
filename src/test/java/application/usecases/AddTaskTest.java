@@ -9,6 +9,7 @@ import core.task.Task;
 import core.task.TaskID;
 import core.task.TaskState;
 import core.usecases.AddTask;
+import infrastructure.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,10 +28,7 @@ import static org.mockito.Mockito.*;
 class AddTaskTest {
 
     @Mock
-    private TaskReader mockedTaskReader;
-
-    @Mock
-    private TaskWriter mockedTaskWriter;
+    private TaskRepository mockedTaskRepository;
 
     @InjectMocks
     private AddTask sut;
@@ -46,14 +44,14 @@ class AddTaskTest {
                 TaskState.TODO,
                 List.of());
 
-        when(mockedTaskReader.findLastId()).thenReturn(Optional.empty());
-        when(mockedTaskWriter.save(any(Task.class))).thenReturn(expected);
+        when(mockedTaskRepository.findLastId()).thenReturn(Optional.empty());
+        when(mockedTaskRepository.save(any(Task.class))).thenReturn(expected);
 
         var result = sut.execute(input);
         assertEquals(expected, result);
 
-        verify(mockedTaskReader).findLastId();
-        verify(mockedTaskWriter).save(any(Task.class));
-        verifyNoMoreInteractions(mockedTaskWriter);
+        verify(mockedTaskRepository).findLastId();
+        verify(mockedTaskRepository).save(any(Task.class));
+        verifyNoMoreInteractions(mockedTaskRepository);
     }
 }
