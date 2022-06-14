@@ -7,6 +7,5 @@ import java.util.Collection;
 import java.util.Optional;
 
 public interface TaskReader {
-    Collection<Task> readAll();
-    Optional<TaskID> findLastId();
+
 }

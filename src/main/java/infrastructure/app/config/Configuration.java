@@ -18,4 +18,7 @@ public class Configuration {
     public static CommandGenerator commandGenerator() {
         return commandGeneratorInstance;
     }
+
+    public static final String dbPath = "fileDB/db.json";
+
 }
