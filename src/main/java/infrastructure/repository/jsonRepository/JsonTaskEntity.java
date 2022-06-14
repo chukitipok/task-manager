@@ -25,21 +25,22 @@ public class JsonTaskEntity extends TaskEntity {
         super(id, description, creationDate, dueDate, closeDate, state, subtasks);
     }
 
-    public JSONObject toJson() {
+    public static JSONObject toJson(TaskEntity taskEntity) {
         JSONArray newSubtasks = new JSONArray();
-        subtasks.forEach((task -> newSubtasks.add(task.toJson())));
+        taskEntity.getSubtasks().forEach((task -> newSubtasks.add(JsonTaskEntity.toJson(task))));
 
         JSONObject jsonObject = new JSONObject();
-        jsonObject.put("id", id);
-        jsonObject.put("description", description);
-        jsonObject.put("creationDate", creationDate);
-        jsonObject.put("dueDate", dueDate);
-        jsonObject.put("closeDate", closeDate);
-        jsonObject.put("state", state);
-        jsonObject.put("subtasks", subtasks);
+        jsonObject.put("id", taskEntity.getId());
+        jsonObject.put("description", taskEntity.getDescription());
+        jsonObject.put("creationDate", taskEntity.getCreationDate());
+        jsonObject.put("dueDate", taskEntity.getDueDate());
+        jsonObject.put("closeDate", taskEntity.getCloseDate());
+        jsonObject.put("state", taskEntity.getState());
+        jsonObject.put("subtasks", taskEntity.getSubtasks());
 
         return jsonObject;
     }
+
     public Task toTask() {
         return new Task(Optional.of(new TaskID(id)), description, Optional.of(LocalDate.parse(dueDate)), TaskState.values()[state], subtasks.stream().map(subtask -> subtask.toTask()).toList());
     }

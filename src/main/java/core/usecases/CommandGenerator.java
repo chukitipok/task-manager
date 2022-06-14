@@ -3,9 +3,6 @@ package core.usecases;
 import core.command.Command;
 import core.command.CommandAction;
 import infrastructure.repository.TaskRepository;
-import infrastructure.util.InvalidCommandException;
-import core.ports.TaskReader;
-import core.ports.TaskWriter;
 
 public class CommandGenerator {
 

@@ -3,12 +3,12 @@ package application.usecases;
 import core.command.CommandAction;
 import core.command.CommandDTO;
 import core.command.CommandOption;
-import core.ports.TaskReader;
-import core.ports.TaskWriter;
 import core.task.Task;
 import core.task.TaskID;
 import core.task.TaskState;
 import core.usecases.AddTask;
+import infrastructure.adapter.TaskToJsonTaskEntity;
+import infrastructure.repository.TaskEntity;
 import infrastructure.repository.TaskRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +16,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -35,23 +37,26 @@ class AddTaskTest {
 
     @Test
     void should_add_a_new_task() {
-        var input = new CommandDTO(CommandAction.ADD, null, new HashMap<>());
+        var date = LocalDate.now();
+        var options = new HashMap<CommandOption, String>();
+        options.put(CommandOption.DUE_DATE, date.toString());
+        options.put(CommandOption.STATUS, "PENDING");
+
+        var input = new CommandDTO(CommandAction.ADD, null, options);
 
         var expected = new Task(
-                Optional.of(new TaskID(1)),
-                input.options().get(CommandOption.CONTENT),
                 Optional.empty(),
-                TaskState.TODO,
+                input.options().get(CommandOption.CONTENT),
+                Optional.of(date),
+                TaskState.PENDING,
                 List.of());
 
-        when(mockedTaskRepository.findLastId()).thenReturn(Optional.empty());
-        when(mockedTaskRepository.save(any(Task.class))).thenReturn(expected);
+        when(mockedTaskRepository.save(any(TaskEntity.class))).thenReturn(TaskToJsonTaskEntity.toEntity(expected));
 
         var result = sut.execute(input);
-        assertEquals(expected, result.stream().findFirst());
+        assertEquals(expected, result.stream().findFirst().get());
 
-        verify(mockedTaskRepository).findLastId();
-        verify(mockedTaskRepository).save(any(Task.class));
+        verify(mockedTaskRepository).save(any(TaskEntity.class));
         verifyNoMoreInteractions(mockedTaskRepository);
     }
 }

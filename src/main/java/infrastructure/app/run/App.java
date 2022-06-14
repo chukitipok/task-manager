@@ -11,6 +11,11 @@ import java.util.Optional;
 
 public class App {
 
+    // Test args:
+    // add 1 -d:2022-03-01 -c "hello world" -s "PENDING"
+    // list
+    // remove 1
+
     public static void main(String[] args) {
         var commandGenerator = Configuration.commandGenerator();
 
