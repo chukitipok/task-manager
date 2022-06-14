@@ -51,4 +51,32 @@ public abstract class TaskEntity {
     public Collection<JsonTaskEntity> getSubtasks() {
         return subtasks;
     }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public void setCloseDate(String closeDate) {
+        this.closeDate = closeDate;
+    }
+
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    public void setSubtasks(Collection<JsonTaskEntity> subtasks) {
+        this.subtasks = subtasks;
+    }
 }

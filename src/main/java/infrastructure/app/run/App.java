@@ -13,6 +13,7 @@ public class App {
     // Test args:
     // add 1 -d:2022-03-01 -c "hello world" -s "PENDING"
     // list
+    // remove 1
 
     public static void main(String[] args) {
         var commandGenerator = Configuration.commandGenerator();
@@ -25,8 +26,6 @@ public class App {
             System.out.println(commandDTO.action().value());
             System.out.println(tasks);
 
-
-            // todo: print task
         }
         catch (InvalidCommandException exception) {
             System.out.println(exception);
