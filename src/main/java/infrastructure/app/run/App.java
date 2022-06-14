@@ -25,6 +25,8 @@ public class App {
             delivery.display();
         }
         catch (InvalidCommandException exception) {
+            System.out.println(exception);
+            // Todo: print command helper
             Delivery.displayCommandHelper();
         }
     }
