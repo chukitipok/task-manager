@@ -1,12 +1,15 @@
 package infrastructure.repository;
 
-import core.ports.TaskReader;
-import core.ports.TaskWriter;
-import core.task.Task;
-
 import java.util.Collection;
+import java.util.Optional;
 
-public interface TaskRepository<T> extends TaskReader, TaskWriter {
-    T taskToReposistoryTask(Task task);
-    int genrateId(Collection<Task> tasks);
+public interface TaskRepository<T extends TaskEntity>  {
+
+    TaskEntity save(TaskEntity task);
+    Collection<TaskEntity> readAll();
+    Optional<Integer> findLastId();
+
+    T taskToRepositoryTask(TaskEntity task);
+
+    int generateId(Collection<TaskEntity> tasks);
 }
