@@ -10,6 +10,10 @@ import java.util.List;
 
 public class App {
 
+    // Test args:
+    // add 1 -d:2022-03-01 -c "hello world" -s "PENDING"
+    // list
+
     public static void main(String[] args) {
         var commandGenerator = Configuration.commandGenerator();
 
@@ -18,10 +22,14 @@ public class App {
             var command = commandGenerator.generate(commandDTO.action());
 
             Collection<Task> tasks = command.execute(commandDTO);
+            System.out.println(commandDTO.action().value());
+            System.out.println(tasks);
+
 
             // todo: print task
         }
         catch (InvalidCommandException exception) {
+            System.out.println(exception);
             // Todo: print command helper
         }
     }
