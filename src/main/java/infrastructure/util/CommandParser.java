@@ -44,8 +44,8 @@ public class CommandParser implements Parser {
 
             return new CommandDTO(commandAction, taskId, options);
         }
-        catch (CmdLineException | NoSuchElementException | IllegalArgumentException e) {
-            throw new InvalidCommandException(e);
+        catch (CmdLineException | NoSuchElementException | IllegalArgumentException ignored) {
+            throw new InvalidCommandException();
         }
     }
 
