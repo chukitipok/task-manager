@@ -50,6 +50,8 @@ public class CommandParser implements Parser {
     }
 
     private void fillOptions() {
+        var dueDate = this.dueDate != null ? this.dueDate + "T23:59:59" : null;
+
         options.put(CommandOption.CONTENT, content);
         options.put(CommandOption.DUE_DATE, dueDate);
         options.put(CommandOption.STATUS, status);

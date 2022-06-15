@@ -3,43 +3,48 @@ package core.usecases;
 import core.command.Command;
 import core.command.CommandDTO;
 import core.command.CommandOption;
+import core.ports.TaskReader;
+import core.ports.TaskWriter;
 import core.task.Task;
-import infrastructure.adapter.TaskToJsonTaskEntity;
-import infrastructure.repository.TaskRepository;
+import core.task.TaskDto;
+import core.task.TaskState;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
 
 public class UpdateTask implements Command {
 
-    private final TaskRepository taskRepository;
+    private final TaskReader reader;
+    private final TaskWriter writer;
 
-    public UpdateTask(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+    public UpdateTask(TaskReader reader, TaskWriter writer) {
+        this.reader = reader;
+        this.writer = writer;
     }
 
     public Collection<Task> execute(CommandDTO commandDTO) {
         var dueDateOption = commandDTO.options().get(CommandOption.DUE_DATE);
         var statusOption = commandDTO.options().get(CommandOption.STATUS);
         var contentOption = commandDTO.options().get(CommandOption.CONTENT);
+        var dueDate = Optional.ofNullable(dueDateOption);
 
-        var toUpdate = taskRepository.findById(commandDTO.taskId());
+        var dto = reader.findById(commandDTO.taskId()).orElseThrow();
+        var task = Task.update(dto, contentOption, dueDate, statusOption);
 
-        var task = TaskToJsonTaskEntity.fromEntity(toUpdate);
-        if(contentOption != null) {
-            task = task.setDescription(contentOption);
-        }
-        if(dueDateOption != null) {
-            task = task.setDueDate(dueDateOption);
-        }
-        if(statusOption != null) {
-            task = task.setStatus(statusOption);
-        }
+        var closeDate = task.status() == TaskState.DONE.toValue() ? Optional.of(LocalDateTime.now()) : dto.closed();
 
-        var updated = taskRepository.update(TaskToJsonTaskEntity.toEntity(task));
+        var updated = new TaskDto(
+                dto.id(),
+                dto.content(),
+                dto.dueDate(),
+                dto.created(),
+                closeDate,
+                task.status(),
+                dto.subtasks());
 
-        var result = new ArrayList<Task>();
-        result.add(TaskToJsonTaskEntity.fromEntity(updated));
-        return result;
+        writer.save(updated);
+        return List.of(new Task(task));
     }
 }

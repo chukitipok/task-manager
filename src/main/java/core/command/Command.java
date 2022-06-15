@@ -6,4 +6,5 @@ import java.util.Collection;
 
 public interface Command {
     Collection<Task> execute(CommandDTO commandDTO);
+
 }
