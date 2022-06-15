@@ -1,10 +1,8 @@
 package core.ports;
 
-import core.task.Task;
-import infrastructure.repository.TaskEntity;
+import core.task.TaskDto;
 
-public interface TaskWriter<T> {
-    TaskEntity save(TaskEntity task);
-    void remove(int id);
-    TaskEntity update(TaskEntity task);
+public interface TaskWriter {
+    TaskDto save(TaskDto taskToSave);
+    boolean remove(int id);
 }

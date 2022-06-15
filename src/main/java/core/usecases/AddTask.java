@@ -3,42 +3,38 @@ package core.usecases;
 import core.command.Command;
 import core.command.CommandDTO;
 import core.command.CommandOption;
+import core.ports.TaskReader;
+import core.ports.TaskWriter;
 import core.task.Task;
-import core.task.TaskState;
-import infrastructure.adapter.TaskToJsonTaskEntity;
-import infrastructure.repository.TaskRepository;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 public class AddTask implements Command {
 
-    private final TaskRepository taskRepository;
+    private final TaskReader reader;
+    private final TaskWriter writer;
 
-    public AddTask(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
+    public AddTask(TaskReader reader, TaskWriter writer) {
+        this.reader = reader;
+        this.writer = writer;
     }
 
     public Collection<Task> execute(CommandDTO commandDTO) {
         var dueDateOption = commandDTO.options().get(CommandOption.DUE_DATE);
-        var statusOption = commandDTO.options().get(CommandOption.STATUS);
+        var content = commandDTO.options().get(CommandOption.CONTENT);
+        var dueDate = Optional.ofNullable(dueDateOption);
 
-        Optional<LocalDate> dueDate =
-                dueDateOption != null ? Optional.of(LocalDate.parse(dueDateOption)) : Optional.empty();
+        var task = Task.create(reader.findLastId(), content, dueDate);
 
-        var task = new Task(
-                Optional.empty(),
-                commandDTO.options().get(CommandOption.CONTENT),
-                dueDate,
-                statusOption != null ? TaskState.valueOf(statusOption) : TaskState.TODO,
-                List.of());
+        var t = writer.save(task.createDto());
 
-        var created = taskRepository.save(TaskToJsonTaskEntity.toEntity(task));
         var tasks = new ArrayList<Task>();
         tasks.add(task);
+
         return tasks;
     }
+
+
 }
