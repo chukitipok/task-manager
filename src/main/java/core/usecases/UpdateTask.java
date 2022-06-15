@@ -36,13 +36,13 @@ public class UpdateTask implements Command {
         var closeDate = task.status() == TaskState.DONE.toValue() ? Optional.of(LocalDateTime.now()) : dto.closed();
 
         var updated = new TaskDto(
-                dto.id(),
-                dto.content(),
-                dto.dueDate(),
-                dto.created(),
+                task.id(),
+                task.content(),
+                task.dueDate(),
+                task.created(),
                 closeDate,
                 task.status(),
-                dto.subtasks());
+                task.subtasks());
 
         writer.save(updated);
         return List.of(new Task(task));
