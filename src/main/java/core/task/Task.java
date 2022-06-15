@@ -35,11 +35,12 @@ public record Task(
     public static TaskDto update(TaskDto dto, String content, Optional<String> dueDate, String status) {
         var description = content != null ? content : dto.content();
         var state = status != null ? TaskState.valueOf(status).toValue() : dto.status();
+        var date = dueDate.isPresent() ? dueDate.map(LocalDateTime::parse) : dto.dueDate();
 
         return new TaskDto(
                 dto.id(),
                 description,
-                dueDate.map(LocalDateTime::parse),
+                date,
                 dto.created(),
                 dto.closed(),
                 state,

@@ -9,6 +9,7 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class TaskMapper implements Mapper<TaskEntity, TaskDto> {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public TaskDto toDto(TaskEntity entity) {
         var subtasks = entity.subtasks().stream().map(this::toDto).toList();
@@ -24,9 +25,7 @@ public class TaskMapper implements Mapper<TaskEntity, TaskDto> {
     }
 
     public TaskEntity toEntity(TaskDto dto) {
-        var formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         var created = dto.created().isPresent() ? dto.created().get().format(formatter) : null;
-//        var created = dto.created().isPresent() ? dto.created().get().toString() : null;
         var dueDate = dto.dueDate().isPresent() ? dto.dueDate().get().format(formatter) : null;
         var closeDate = dto.closed().isPresent() ? dto.closed().get().format(formatter) : null;
 
@@ -44,7 +43,7 @@ public class TaskMapper implements Mapper<TaskEntity, TaskDto> {
 
     private Optional<LocalDateTime> getDateTimeFrom(String dateTimeToParse) {
         try {
-            var dateTime = LocalDateTime.parse(dateTimeToParse);
+            var dateTime = LocalDateTime.parse(dateTimeToParse, formatter);
             return Optional.of(dateTime);
         }
         catch (DateTimeParseException | NullPointerException exception) {
