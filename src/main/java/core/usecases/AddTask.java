@@ -28,7 +28,7 @@ public class AddTask implements Command {
 
         var task = Task.create(reader.findLastId(), content, dueDate);
 
-        var t = writer.save(task.createDto());
+        writer.save(task.createDto());
 
         var tasks = new ArrayList<Task>();
         tasks.add(task);
