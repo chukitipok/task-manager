@@ -5,7 +5,9 @@ import core.command.CommandDTO;
 import core.command.CommandOption;
 import core.ports.TaskReader;
 import core.ports.TaskWriter;
+import core.task.InvalidTaskException;
 import core.task.Task;
+import infrastructure.util.InvalidCommandException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -21,19 +23,22 @@ public class AddTask implements Command {
         this.writer = writer;
     }
 
-    public Collection<Task> execute(CommandDTO commandDTO) {
+    public Collection<Task> execute(CommandDTO commandDTO) throws InvalidCommandException {
         var dueDateOption = commandDTO.options().get(CommandOption.DUE_DATE);
         var content = commandDTO.options().get(CommandOption.CONTENT);
         var dueDate = Optional.ofNullable(dueDateOption);
 
-        var task = Task.create(reader.findLastId(), content, dueDate);
+        try {
+            var task = Task.create(reader.findLastId(), content, dueDate);
+            writer.save(task.createDto());
 
-        writer.save(task.createDto());
-
-        var tasks = new ArrayList<Task>();
-        tasks.add(task);
-
-        return tasks;
+            var tasks = new ArrayList<Task>();
+            tasks.add(task);
+            return tasks;
+        }
+        catch (InvalidTaskException e) {
+            throw new InvalidCommandException();
+        }
     }
 
 

@@ -23,7 +23,11 @@ public record Task(
         );
     }
 
-    public static Task create(OptionalInt id, String content, Optional<String> dueDate) {
+    public static Task create(OptionalInt id, String content, Optional<String> dueDate) throws InvalidTaskException {
+        if (content.isEmpty() || content.isBlank()) {
+            throw new InvalidTaskException();
+        }
+
         return new Task(
                 new TaskID(generateTaskID(id)),
                 content,

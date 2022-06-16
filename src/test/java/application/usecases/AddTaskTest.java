@@ -10,6 +10,7 @@ import core.task.TaskDto;
 import core.task.TaskID;
 import core.task.TaskState;
 import core.usecases.AddTask;
+import infrastructure.util.InvalidCommandException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +24,7 @@ import java.util.Optional;
 import java.util.OptionalInt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -39,7 +41,22 @@ class AddTaskTest {
     private AddTask sut;
 
     @Test
-    void should_add_a_new_task() {
+    void should_throw_error_when_task_is_invalid() {
+        var options = new HashMap<CommandOption, String>();
+        options.put(CommandOption.CONTENT, "");
+        var input = new CommandDTO(CommandAction.ADD, null, options);
+
+        when(taskReader.findLastId()).thenReturn(OptionalInt.empty());
+
+        assertThrowsExactly(InvalidCommandException.class, () -> sut.execute(input));
+
+        verify(taskReader).findLastId();
+        verifyNoMoreInteractions(taskReader);
+        verifyNoInteractions(taskWriter);
+    }
+
+    @Test
+    void should_add_a_new_task() throws InvalidCommandException {
         var date = LocalDateTime.now();
         var options = new HashMap<CommandOption, String>();
         options.put(CommandOption.CONTENT, "This a test which should work");
