@@ -66,7 +66,6 @@ public record Task(
         if (optionalLastId.isPresent()) {
             return optionalLastId.getAsInt() + 1;
         }
-
         return 1;
     }
 }
