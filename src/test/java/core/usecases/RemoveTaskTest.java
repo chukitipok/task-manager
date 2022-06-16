@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.internal.matchers.Null;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.swing.text.html.Option;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -33,13 +34,13 @@ class RemoveTaskTest {
 
     @Test
     void should_throw_error_when_taskId_is_missing() {
-        var input = new CommandDTO(CommandAction.REMOVE, null, new HashMap());
+        var input = new CommandDTO(CommandAction.REMOVE, null, new HashMap<>());
         assertThrowsExactly(IllegalArgumentException.class, () -> sut.execute(input));
     }
 
     @Test
     void should_remove_task() throws InvalidCommandException {
-        var input = new CommandDTO(CommandAction.REMOVE, 1, new HashMap());
+        var input = new CommandDTO(CommandAction.REMOVE, 1, new HashMap<>());
 
         when(taskWriter.remove(any(Integer.class))).thenReturn(true);
 
