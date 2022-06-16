@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Comparator;
 
 public class ListPrinter implements Printer {
-
     public void print(Collection<Task> tasks) {
         System.out.println("id | description | status");
         tasks.stream()

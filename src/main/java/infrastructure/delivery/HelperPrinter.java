@@ -1,7 +1,6 @@
 package infrastructure.delivery;
 
 public class HelperPrinter {
-
     public static void print() {
         System.out.println("Invalid command, please check help info.");
         System.out.println("Help info:");
