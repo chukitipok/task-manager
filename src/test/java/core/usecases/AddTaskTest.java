@@ -1,4 +1,4 @@
-package application.usecases;
+package core.usecases;
 
 import core.command.CommandAction;
 import core.command.CommandDTO;
@@ -9,7 +9,6 @@ import core.task.Task;
 import core.task.TaskDto;
 import core.task.TaskID;
 import core.task.TaskState;
-import core.usecases.AddTask;
 import infrastructure.util.InvalidCommandException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
