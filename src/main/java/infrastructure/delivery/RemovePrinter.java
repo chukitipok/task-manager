@@ -6,7 +6,6 @@ import java.util.Collection;
 
 public class RemovePrinter implements Printer {
     public void print(Collection<Task> tasks) {
-        var task = tasks.iterator().next();
-        System.out.println("task with id: " + task.id().value());
+        System.out.println("Task has been successfully removed.");
     }
 }
