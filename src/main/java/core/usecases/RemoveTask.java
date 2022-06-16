@@ -16,6 +16,9 @@ public class RemoveTask implements Command {
     }
 
     public Collection<Task> execute(CommandDTO commandDTO) {
+        if(commandDTO.taskId() == null) {
+            throw new IllegalArgumentException();
+        }
         writer.remove(commandDTO.taskId());
         return null;
     }
