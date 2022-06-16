@@ -62,16 +62,6 @@ public record Task(
         );
     }
 
-    public Task setStatus(String newStatus) {
-        return new Task(id, description, dueDate, status != null ? TaskState.valueOf(newStatus) : TaskState.TODO, subtasks);
-    }
-    public Task setDescription(String newDescription) {
-        return new Task(id, newDescription, dueDate, status, subtasks);
-    }
-    public Task setDueDate(String newDueDate) {
-        return new Task(id, description, newDueDate != null ? Optional.of(LocalDateTime.parse(newDueDate)) : Optional.empty(), status, subtasks);
-    }
-
     private static int generateTaskID(OptionalInt optionalLastId) {
         if (optionalLastId.isPresent()) {
             return optionalLastId.getAsInt() + 1;
