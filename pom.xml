@@ -76,7 +76,6 @@
                         </manifest>
                     </archive>
                     <finalName>task-manager</finalName>
-                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
 
                 <executions>

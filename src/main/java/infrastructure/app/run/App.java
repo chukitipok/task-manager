@@ -3,8 +3,8 @@ package infrastructure.app.run;
 import infrastructure.app.config.Configuration;
 import infrastructure.delivery.Delivery;
 import infrastructure.delivery.HelperPrinter;
-import infrastructure.util.InvalidCommandException;
 import infrastructure.util.CommandParser;
+import infrastructure.util.InvalidCommandException;
 
 import java.util.List;
 
