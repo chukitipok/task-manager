@@ -1,7 +1,10 @@
 package core.command;
 
 import core.task.Task;
+import infrastructure.util.InvalidCommandException;
+
+import java.util.Collection;
 
 public interface Command {
-    Task execute(CommandDTO commandDTO);
+    Collection<Task> execute(CommandDTO commandDTO) throws InvalidCommandException;
 }

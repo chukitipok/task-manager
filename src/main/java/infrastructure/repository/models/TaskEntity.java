@@ -1,13 +1,13 @@
-package infrastructure.repository;
+package infrastructure.repository.models;
 
 import java.util.Collection;
 
-public record JsonTask(
+public record TaskEntity (
         int id,
         String description,
         String creationDate,
         String dueDate,
         String closeDate,
         int state,
-        Collection<JsonTask> subtasks
+        Collection<TaskEntity> subtasks
 ) {}

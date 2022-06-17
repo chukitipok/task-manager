@@ -1,12 +1,13 @@
 package core.ports;
 
-import core.task.Task;
-import core.task.TaskID;
+import core.task.TaskDto;
 
 import java.util.Collection;
 import java.util.Optional;
+import java.util.OptionalInt;
 
 public interface TaskReader {
-    Collection<Task> readAll();
-    Optional<TaskID> findLastId();
+    Collection<TaskDto> readAll();
+    OptionalInt findLastId();
+    Optional<TaskDto> findById(int taskId);
 }

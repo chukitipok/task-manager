@@ -1,3 +1,5 @@
 package infrastructure.util;
 
-public class InvalidCommandException extends Exception {}
+public class InvalidCommandException extends Exception {
+
+}

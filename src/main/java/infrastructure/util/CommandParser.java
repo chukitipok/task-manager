@@ -12,7 +12,7 @@ import java.util.*;
 
 public class CommandParser implements Parser {
 
-    @Option(name = "-c", required = true, usage = "The description of the task to achieve.")
+    @Option(name = "-c", usage = "The description of the task to achieve.")
     private String content;
 
     @Option(name = "-d", usage = "The deadline to achieve the task.")
@@ -44,12 +44,14 @@ public class CommandParser implements Parser {
 
             return new CommandDTO(commandAction, taskId, options);
         }
-        catch (CmdLineException | NoSuchElementException | IllegalArgumentException e) {
+        catch (CmdLineException | NoSuchElementException | IllegalArgumentException ignored) {
             throw new InvalidCommandException();
         }
     }
 
     private void fillOptions() {
+        var dueDate = this.dueDate != null ? this.dueDate + "T23:59:59" : null;
+
         options.put(CommandOption.CONTENT, content);
         options.put(CommandOption.DUE_DATE, dueDate);
         options.put(CommandOption.STATUS, status);

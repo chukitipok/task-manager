@@ -5,39 +5,41 @@ import core.command.CommandDTO;
 import core.command.CommandOption;
 import core.ports.TaskReader;
 import core.ports.TaskWriter;
+import core.task.InvalidTaskException;
 import core.task.Task;
-import core.task.TaskID;
-import core.task.TaskState;
+import infrastructure.util.InvalidCommandException;
 
-import java.time.LocalDate;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Optional;
 
 public class AddTask implements Command {
 
-    private final TaskReader taskReader;
-    private final TaskWriter taskWriter;
+    private final TaskReader reader;
+    private final TaskWriter writer;
 
-    public AddTask(TaskReader taskReader, TaskWriter taskWriter) {
-        this.taskReader = taskReader;
-        this.taskWriter = taskWriter;
+    public AddTask(TaskReader reader, TaskWriter writer) {
+        this.reader = reader;
+        this.writer = writer;
     }
 
-    public Task execute(CommandDTO commandDTO) {
+    public Collection<Task> execute(CommandDTO commandDTO) throws InvalidCommandException {
         var dueDateOption = commandDTO.options().get(CommandOption.DUE_DATE);
+        var content = commandDTO.options().get(CommandOption.CONTENT);
+        var dueDate = Optional.ofNullable(dueDateOption);
 
-        Optional<LocalDate> dueDate =
-                dueDateOption != null ? Optional.of(LocalDate.parse(dueDateOption)) : Optional.empty();
+        try {
+            var task = Task.create(reader.findLastId(), content, dueDate);
+            writer.save(task.createDto());
 
-        var taskId = taskReader.findLastId().orElseGet(() -> new TaskID(1));
-
-        var task = new Task(
-                taskId,
-                commandDTO.options().get(CommandOption.CONTENT),
-                dueDate,
-                TaskState.TODO,
-                List.of());
-
-        return taskWriter.save(task);
+            var tasks = new ArrayList<Task>();
+            tasks.add(task);
+            return tasks;
+        }
+        catch (InvalidTaskException e) {
+            throw new InvalidCommandException();
+        }
     }
+
+
 }

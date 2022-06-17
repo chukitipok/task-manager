@@ -5,8 +5,8 @@ import java.util.Optional;
 public enum CommandAction {
     ADD("add"),
     LIST("list"),
-    REMOVE("remove"),
-    UPDATE("update");
+    UPDATE("update"),
+    REMOVE("remove");
 
     private final String value;
 

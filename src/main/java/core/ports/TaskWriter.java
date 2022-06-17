@@ -1,7 +1,8 @@
 package core.ports;
 
-import core.task.Task;
+import core.task.TaskDto;
 
 public interface TaskWriter {
-    Task save(Task task);
+    TaskDto save(TaskDto taskToSave);
+    boolean remove(int id);
 }

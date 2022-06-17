@@ -1,6 +1,8 @@
 package infrastructure.app.run;
 
 import infrastructure.app.config.Configuration;
+import infrastructure.delivery.Delivery;
+import infrastructure.delivery.HelperPrinter;
 import infrastructure.util.InvalidCommandException;
 import infrastructure.util.CommandParser;
 
@@ -14,14 +16,13 @@ public class App {
         try {
             var commandDTO = new CommandParser().parse(List.of(args));
             var command = commandGenerator.generate(commandDTO.action());
+            var tasks = command.execute(commandDTO);
 
-            var task = command.execute(commandDTO);
-
-            // todo: print task
+            Delivery delivery = new Delivery();
+            delivery.display(commandDTO.action(), tasks);
         }
         catch (InvalidCommandException exception) {
-            // Todo: print command helper
+            HelperPrinter.print();
         }
     }
-
 }
