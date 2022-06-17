@@ -1,5 +1,4 @@
 #!/bin/bash
-mvn clean package
-java -jar ./target/task-manager-1.0-SNAPSHOT.jar -c "hello world"
+java -jar ./target/task-manager-1.0-SNAPSHOT-jar-with-dependencies.jar $@
 
 

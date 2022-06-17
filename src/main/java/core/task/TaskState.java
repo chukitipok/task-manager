@@ -1,5 +1,9 @@
 package core.task;
 
+import core.command.CommandAction;
+
+import java.util.Optional;
+
 public enum TaskState {
     TODO("todo"),
     PENDING("pending"),
@@ -20,5 +24,15 @@ public enum TaskState {
 
     public int toValue() {
         return ordinal();
+    }
+
+    public static Optional<TaskState> of(String value) {
+        for (var state : TaskState.values()) {
+            if (state.value.equalsIgnoreCase(value)) {
+                return Optional.of(state);
+            }
+        }
+
+        return Optional.empty();
     }
 }

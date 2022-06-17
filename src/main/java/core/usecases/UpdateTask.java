@@ -17,7 +17,6 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class UpdateTask implements Command {
-
     private final TaskReader reader;
     private final TaskWriter writer;
 
