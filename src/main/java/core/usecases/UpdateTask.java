@@ -35,7 +35,7 @@ public class UpdateTask implements Command {
             var dto = reader.findById(commandDTO.taskId()).orElseThrow();
             var task = Task.update(dto, contentOption, dueDate, statusOption);
 
-            var closeDate = task.status() == TaskState.DONE.toValue() ? Optional.of(LocalDateTime.now()) : dto.closed();
+            var closeDate = task.status() == TaskState.DONE.ordinal() ? Optional.of(LocalDateTime.now()) : dto.closed();
 
             var updated = new TaskDto(
                     task.id(),

@@ -1,7 +1,5 @@
 package core.task;
 
-import core.command.CommandAction;
-
 import java.util.Optional;
 
 public enum TaskState {
@@ -20,19 +18,5 @@ public enum TaskState {
 
     public String value() {
         return value;
-    }
-
-    public int toValue() {
-        return ordinal();
-    }
-
-    public static Optional<TaskState> of(String value) {
-        for (var state : TaskState.values()) {
-            if (state.value.equalsIgnoreCase(value)) {
-                return Optional.of(state);
-            }
-        }
-
-        return Optional.empty();
     }
 }

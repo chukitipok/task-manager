@@ -38,7 +38,7 @@ public record Task(
 
     public static TaskDto update(TaskDto dto, String content, Optional<String> dueDate, String status) {
         var description = content != null ? content : dto.content();
-        var state = status != null ? TaskState.valueOf(status.toUpperCase()).toValue() : dto.status();
+        var state = status != null ? TaskState.valueOf(status.toUpperCase()).ordinal() : dto.status();
         var date = dueDate.isPresent() ? dueDate.map(LocalDateTime::parse) : dto.dueDate();
 
         return new TaskDto(
@@ -57,7 +57,7 @@ public record Task(
                 dueDate,
                 Optional.of(LocalDateTime.now()),
                 Optional.empty(),
-                status.toValue(),
+                status.ordinal(),
                 subtasks.stream().toList()
         );
     }

@@ -12,6 +12,8 @@ import core.task.TaskState;
 import infrastructure.util.InvalidCommandException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -54,8 +56,10 @@ class AddTaskTest {
         verifyNoInteractions(taskWriter);
     }
 
-    @Test
-    void should_add_a_new_task() throws InvalidCommandException {
+    @ParameterizedTest
+    @ValueSource(ints = { 0, 1, 2 })
+    void should_add_a_new_task(Integer taskId) throws InvalidCommandException {
+        OptionalInt lastId = taskId == 0 ? OptionalInt.empty() : OptionalInt.of(taskId);
         var date = LocalDateTime.now();
         var options = new HashMap<CommandOption, String>();
         options.put(CommandOption.CONTENT, "This a test which should work");
@@ -65,13 +69,13 @@ class AddTaskTest {
         var input = new CommandDTO(CommandAction.ADD, null, options);
 
         var expected = new Task(
-                new TaskID(1),
+                new TaskID(taskId + 1),
                 input.options().get(CommandOption.CONTENT),
                 Optional.of(date),
                 TaskState.TODO,
                 List.of());
 
-        when(taskReader.findLastId()).thenReturn(OptionalInt.empty());
+        when(taskReader.findLastId()).thenReturn(lastId);
         when(taskWriter.save(any(TaskDto.class))).thenReturn(expected.createDto());
 
         var result = sut.execute(input);
