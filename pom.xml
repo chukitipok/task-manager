@@ -69,7 +69,7 @@
                         </manifest>
                     </archive>
                     <finalName>task-manager</finalName>
-                    <appendAssemblyId>true</appendAssemblyId>
+                    <appendAssemblyId>false</appendAssemblyId>
                 </configuration>
 
                 <executions>
